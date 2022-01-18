@@ -27,49 +27,35 @@ function App() {
 
   useEffect(() => {
     const breathTimeout = setTimeout(() => {
-      let newBreath = breath + 1;
-
-      if (newBreath === breathCounts.length) {
-        newBreath = 0;
-      }
-
-      setBreath(newBreath);
+      setBreath(breath + 1 === breathCounts.length ? 0 : breath + 1);
     }, 1000 * breathCounts[breath]);
 
     return () => clearTimeout(breathTimeout);
   }, [breath, breathCounts.length, breathCounts]);
 
   useEffect(() => {
+    let y1 = "90vh";
+    let y2 = "10vh";
+
     switch (breath) {
       case 1: // HOLD
-        gsap.fromTo(
-          breathRef.current,
-          { autoAlpha: 1 },
-          { autoAlpha: 0.2, duration: breathCounts[breath] }
-        );
+        y1 = y2;
         break;
       case 2: // EXHALE
-        gsap.fromTo(
-          breathRef.current,
-          { autoAlpha: 1, y: "10vh" },
-          { autoAlpha: 0.2, y: "90vh", duration: breathCounts[breath] }
-        );
+        [y1, y2] = [y2, y1];
         break;
       case 3: // HOLD 2
-        gsap.fromTo(
-          breathRef.current,
-          { autoAlpha: 1 },
-          { autoAlpha: 0.2, duration: breathCounts[breath] }
-        );
+        y2 = y1;
         break;
       default:
         // INHALE
-        gsap.fromTo(
-          breathRef.current,
-          { autoAlpha: 1, y: "90vh" },
-          { autoAlpha: 0.2, y: "10vh", duration: breathCounts[breath] }
-        );
+        break;
     }
+    gsap.fromTo(
+      breathRef.current,
+      { autoAlpha: 1, y: y1 },
+      { autoAlpha: 0.2, y: y2, duration: breathCounts[breath] }
+    );
   }, [breath, breathCounts]);
 
   const breathClass = `${classes.breath} ${
