@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import Form from "./components/Form";
 
@@ -12,7 +12,9 @@ function App() {
   const [hold2Timer, setHold2Timer] = useState(4);
 
   const breathTypes = ["Inhale", "Hold", "Exhale", "Hold"];
-  const breathCounts = [inhaleTimer, holdTimer, exhaleTimer, hold2Timer];
+  const breathCounts = useMemo(() => {
+    return [inhaleTimer, holdTimer, exhaleTimer, hold2Timer];
+  }, [inhaleTimer, holdTimer, exhaleTimer, hold2Timer]);
 
   const [breath, setBreath] = useState(0);
   const [isLeft, setIsLeft] = useState(true);
