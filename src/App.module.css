@@ -1,0 +1,13 @@
+.breath {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.left {
+    margin-left: 3rem;
+}
+
+.right {
+    text-align: right;
+    margin-right: 3rem;
+}
