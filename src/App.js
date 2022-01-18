@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { gsap } from "gsap";
 import Form from "./components/Form";
 
@@ -25,33 +25,19 @@ function App() {
     setBreath(0);
   };
 
-  const getNextBreath = useCallback(
-    (currentBreath) => {
-      let newBreath = currentBreath + 1;
+  useEffect(() => {
+    const breathTimeout = setTimeout(() => {
+      let newBreath = breath + 1;
 
-      while (
-        newBreath === breathTypes.length ||
-        breathCounts[newBreath] === 0
-      ) {
-        if (newBreath === breathTypes.length) {
-          newBreath = 0;
-        } else {
-          newBreath++;
-        }
+      if (newBreath === breathCounts.length) {
+        newBreath = 0;
       }
 
       setBreath(newBreath);
-    },
-    [breathTypes.length, breathCounts]
-  );
-
-  useEffect(() => {
-    const breathTimeout = setTimeout(() => {
-      getNextBreath(breath);
     }, 1000 * breathCounts[breath]);
 
     return () => clearTimeout(breathTimeout);
-  }, [breath, breathTypes.length, breathCounts, getNextBreath]);
+  }, [breath, breathCounts.length, breathCounts]);
 
   useEffect(() => {
     switch (breath) {
