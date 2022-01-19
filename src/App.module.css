@@ -1,6 +1,13 @@
+:root {
+    --final-opacity: 0.2;
+    --top: 10vh;
+    --bottom: 80vh;
+}
+
 .breath {
     font-size: 3rem;
     font-weight: 700;
+    transform: translateY(var(--top));
 }
 
 .left {
@@ -10,4 +17,45 @@
 .right {
     text-align: right;
     margin-right: 3rem;
+}
+
+@keyframes Inhale {
+    0% {
+        opacity: 1;
+        transform: translateY(var(--bottom));
+    }
+    100% {
+        opacity: var(--final-opacity);
+        transform: translateY(var(--top));
+    }
+}
+
+@keyframes Hold1 {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: var(--final-opacity);
+    }
+}
+
+@keyframes Exhale {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: var(--final-opacity);
+        transform: translateY(var(--bottom));
+    }
+}
+
+@keyframes Hold2 {
+    0% {
+        opacity: 1;
+        transform: translateY(var(--bottom));
+    }
+    100% {
+        opacity: var(--final-opacity);
+        transform: translateY(var(--bottom));
+    }
 }

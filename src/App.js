@@ -1,17 +1,15 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import { gsap } from "gsap";
+import React, { useEffect, useState, useMemo } from "react";
 import Form from "./components/Form";
 
 import classes from "./App.module.css";
 
 function App() {
-  const breathRef = useRef();
   const [inhaleTimer, setInhaleTimer] = useState(4);
   const [holdTimer, setHoldTimer] = useState(4);
   const [exhaleTimer, setExhaleTimer] = useState(4);
   const [hold2Timer, setHold2Timer] = useState(4);
 
-  const breathTypes = ["Inhale", "Hold", "Exhale", "Hold"];
+  const breathTypes = ["Inhale", "Hold1", "Exhale", "Hold2"];
   const breathCounts = useMemo(() => {
     return [inhaleTimer, holdTimer, exhaleTimer, hold2Timer];
   }, [inhaleTimer, holdTimer, exhaleTimer, hold2Timer]);
@@ -35,38 +33,19 @@ function App() {
     return () => clearTimeout(breathTimeout);
   }, [breath, breathCounts.length, breathCounts]);
 
-  useEffect(() => {
-    let y1 = "90vh";
-    let y2 = "10vh";
-
-    switch (breath) {
-      case 1: // HOLD
-        y1 = y2;
-        break;
-      case 2: // EXHALE
-        [y1, y2] = [y2, y1];
-        break;
-      case 3: // HOLD 2
-        y2 = y1;
-        break;
-      default:
-        // INHALE
-        break;
-    }
-    gsap.fromTo(
-      breathRef.current,
-      { autoAlpha: 1, y: y1 },
-      { autoAlpha: 0.2, y: y2, duration: breathCounts[breath] }
-    );
-  }, [breath, breathCounts]);
-
   const breathClass = `${classes.breath} ${
     isLeft ? classes.left : classes.right
   }`;
 
   return (
     <div>
-      <div className={breathClass} ref={breathRef}>
+      <div
+        className={breathClass}
+        style={{
+          animationName: classes[breathTypes[breath]],
+          animationDuration: `${breathCounts[breath]}s`,
+        }}
+      >
         {breathTypes[breath]}
       </div>
       <Form timerHandler={timerHandler} isLeft={isLeft} setIsLeft={setIsLeft} />
