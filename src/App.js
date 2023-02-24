@@ -1,55 +1,103 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import Form from "./components/Form";
 
 import classes from "./App.module.css";
 
 function App() {
-  const [inhaleTimer, setInhaleTimer] = useState(4);
-  const [holdTimer, setHoldTimer] = useState(4);
-  const [exhaleTimer, setExhaleTimer] = useState(4);
-  const [hold2Timer, setHold2Timer] = useState(4);
+  const inhaleRef = useRef();
+  const holdRef = useRef();
+  const exhaleRef = useRef();
+  const hold2Ref = useRef();
 
-  const breathTypes = ["Inhale", "Hold1", "Exhale", "Hold2"];
-  const breathCounts = useMemo(() => {
-    return [inhaleTimer, holdTimer, exhaleTimer, hold2Timer];
-  }, [inhaleTimer, holdTimer, exhaleTimer, hold2Timer]);
-
-  const [breath, setBreath] = useState(0);
   const [isLeft, setIsLeft] = useState(true);
 
-  const timerHandler = (inhale, hold, exhale, hold2) => {
-    setInhaleTimer(inhale);
-    setHoldTimer(hold);
-    setExhaleTimer(exhale);
-    setHold2Timer(hold2);
-    setBreath(0);
+  const setup = {
+    default: 4,
+    min: 0,
+    max: 15,
+    step: 0.1,
   };
 
-  useEffect(() => {
-    const breathTimeout = setTimeout(() => {
-      setBreath(breath + 1 === breathCounts.length ? 0 : breath + 1);
-    }, 1000 * breathCounts[breath]);
+  // const timerHandler = (inhale, hold, exhale, hold2) => {
+  //   setInhaleTimer(inhale);
+  //   setHoldTimer(hold);
+  //   setExhaleTimer(exhale);
+  //   setHold2Timer(hold2);
+  //   setBreath(0);
+  // };
 
-    return () => clearTimeout(breathTimeout);
-  }, [breath, breathCounts.length, breathCounts]);
+  // useEffect(() => {
+  //   const breathTimeout = setTimeout(() => {
+  //     setBreath(breath + 1 === breathCounts.length ? 0 : breath + 1);
+  //   }, 1000 * breathCounts[breath]);
 
-  const breathClass = `${classes.breath} ${
-    isLeft ? classes.left : classes.right
-  }`;
+  //   return () => clearTimeout(breathTimeout);
+  // }, [breath, breathCounts.length, breathCounts]);
 
   return (
-    <div>
-      <div
-        className={breathClass}
-        style={{
-          animationName: classes[breathTypes[breath]],
-          animationDuration: `${breathCounts[breath]}s`,
-        }}
-      >
-        {breathTypes[breath]}
+    <>
+      <div className={classes.breath} data-breath="inhale" data-side={isLeft ? "left" : "right"}>
+        {/* {breathTypes[breath]} */}
+        BREATH
       </div>
-      <Form timerHandler={timerHandler} isLeft={isLeft} setIsLeft={setIsLeft} />
-    </div>
+      <div className={classes.controls}>
+        <div className={classes.inputContainer}>
+          <label>Inhale</label>
+          <input
+            ref={inhaleRef}
+            id="inhale"
+            name="inhale"
+            type="number"
+            min={setup.min}
+            max={setup.max}
+            step={setup.step}
+            defaultValue={setup.default}
+          />
+        </div>
+        <div className={classes.inputContainer}>
+          <label>Hold</label>
+          <input
+            ref={holdRef}
+            id="hold"
+            name="hold"
+            type="number"
+            min={setup.min}
+            max={setup.max}
+            step={setup.step}
+            defaultValue={setup.default}
+          />
+        </div>
+        <div className={classes.inputContainer}>
+          <label>Exhale</label>
+          <input
+            ref={exhaleRef}
+            id="exhale"
+            name="exhale"
+            type="number"
+            min={setup.min}
+            max={setup.max}
+            step={setup.step}
+            defaultValue={setup.default}
+          />
+        </div>
+        <div className={classes.inputContainer}>
+          <label>Hold</label>
+          <input
+            ref={hold2Ref}
+            id="hold2"
+            name="hold"
+            type="number"
+            min={setup.min}
+            max={setup.max}
+            step={setup.step}
+            defaultValue={setup.default}
+          />
+        </div>
+        <button className={classes.button} onClick={() => setIsLeft(!isLeft)}>
+          {isLeft ? "Breath Right" : "Breath Left"}
+        </button>
+      </div>
+    </>
   );
 }
 

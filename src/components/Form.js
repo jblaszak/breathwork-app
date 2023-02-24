@@ -26,9 +26,6 @@ const Form = ({ timerHandler, isLeft, setIsLeft }) => {
       <Input label="Exhale" inputRef={exhaleRef} defaultValue={4} />
       <Input label="Hold 2" inputRef={hold2Ref} defaultValue={4} />
       <button className={classes.button}>Submit</button>
-      <button className={classes.button} onClick={() => setIsLeft(!isLeft)}>
-        {isLeft ? "Text Right Side" : "Text Left Side"}
-      </button>
     </form>
   );
 };

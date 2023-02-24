@@ -1,61 +1,71 @@
 :root {
-    --final-opacity: 0.2;
-    --top: 10vh;
-    --bottom: 80vh;
+  --final-opacity: 0.2;
+  --breath-time: 4s;
+  --transform: translateY(10vh);
 }
 
 .breath {
-    font-size: 3rem;
-    font-weight: 700;
-    transform: translateY(var(--top));
+  font-size: 3rem;
+  font-weight: 700;
 }
 
-.left {
-    margin-left: 3rem;
+[data-breath="inhale"],
+[data-breath="hold"],
+[data-breath="exhale"],
+[data-breath="hold2"] {
+  transform: var(--transform);
+  transition: transform var(--breath-time);
+  animation: fadeOut var(--breath-time) forwards;
 }
 
-.right {
-    text-align: right;
-    margin-right: 3rem;
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
 
-@keyframes Inhale {
-    0% {
-        opacity: 1;
-        transform: translateY(var(--bottom));
-    }
-    100% {
-        opacity: var(--final-opacity);
-        transform: translateY(var(--top));
-    }
+[data-side="left"] {
+  margin-left: 3rem;
 }
 
-@keyframes Hold1 {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: var(--final-opacity);
-    }
+[data-side="right"] {
+  text-align: right;
+  margin-right: 3rem;
 }
 
-@keyframes Exhale {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: var(--final-opacity);
-        transform: translateY(var(--bottom));
-    }
+.controls {
+  display: grid;
+  place-content: center;
 }
 
-@keyframes Hold2 {
-    0% {
-        opacity: 1;
-        transform: translateY(var(--bottom));
-    }
-    100% {
-        opacity: var(--final-opacity);
-        transform: translateY(var(--bottom));
-    }
+.inputContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+}
+
+.inputContainer label {
+  font-size: 1.75rem;
+}
+
+.inputContainer input {
+  height: 1.75rem;
+  font-size: 1.75rem;
+  width: 70px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+.button {
+  font-size: 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgb(154, 255, 168);
 }

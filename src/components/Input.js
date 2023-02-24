@@ -12,7 +12,7 @@ const Input = ({ label, inputRef, defaultValue, value }) => {
         step="0.1"
         defaultValue={defaultValue}
         value={value}
-      ></input>
+      />
     </div>
   );
 };
