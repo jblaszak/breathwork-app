@@ -8,11 +8,15 @@ function App() {
   const exhaleRef = useRef();
   const hold2Ref = useRef();
   const controlsRef = useRef();
+  const rafRef = useRef(0);
+  const breathRef = useRef(0);
+  const stepCountRef = useRef(0);
 
-  const [isLeft, setIsLeft] = useState(true);
+  const breathRefs = [inhaleRef, holdRef, exhaleRef, hold2Ref];
+  const breathNames = ["INHALE", "HOLD", "EXHALE", "HOLD"];
 
   const setup = {
-    default: 4,
+    default: 2,
     min: 0,
     max: 15,
     step: 0.1,
@@ -27,35 +31,49 @@ function App() {
         controlsRef.current.style.opacity = 0;
       }, 3000);
     }
-
     document.addEventListener("mousemove", handleMouseMove);
-
     return () => document.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // const timerHandler = (inhale, hold, exhale, hold2) => {
-  //   setInhaleTimer(inhale);
-  //   setHoldTimer(hold);
-  //   setExhaleTimer(exhale);
-  //   setHold2Timer(hold2);
-  //   setBreath(0);
-  // };
+  const startAnimation = () => {
+    let start = Date.now();
+    const animatedClass = `${classes.animation}`;
 
-  // useEffect(() => {
-  //   const breathTimeout = setTimeout(() => {
-  //     setBreath(breath + 1 === breathCounts.length ? 0 : breath + 1);
-  //   }, 1000 * breathCounts[breath]);
+    function playAnimation() {
+      const interval = Date.now() - start;
+      const currentBreath = stepCountRef.current % breathRefs.length;
+      breathRef.current.dataBreath = breathNames[currentBreath];
+      breathRef.current.innerText = breathNames[currentBreath];
+      if (!breathRef.current.classList.contains(animatedClass)) {
+        breathRef.current.classList.add(animatedClass);
+      }
+      if (interval > breathRefs[currentBreath].current.value * 1000) {
+        stepCountRef.current++;
+        const nextBreath = stepCountRef.current % breathRefs.length;
+        document.documentElement.style.setProperty(
+          "--breath-time",
+          `${breathRefs[nextBreath].current.value}s`
+        );
+        breathRef.current.dataBreath = breathNames[nextBreath];
+        breathRef.current.innerText = breathNames[nextBreath];
+        breathRef.current.classList.remove(animatedClass);
+        start = Date.now();
+      }
 
-  //   return () => clearTimeout(breathTimeout);
-  // }, [breath, breathCounts.length, breathCounts]);
+      rafRef.current = requestAnimationFrame(playAnimation);
+    }
+    requestAnimationFrame(playAnimation);
+  };
+
+  useEffect(() => {
+    startAnimation();
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
 
   return (
     <>
       <div className={classes.breathContainer}>
-        <div className={classes.breath} data-breath="inhale" data-side={isLeft ? "left" : "right"}>
-          {/* {breathTypes[breath]} */}
-          BREATH
-        </div>
+        <div className={classes.breath} data-breath="inhale" ref={breathRef}></div>
       </div>
       <div className={classes.controls} ref={controlsRef}>
         <div className={classes.inputContainer}>
@@ -110,9 +128,6 @@ function App() {
             defaultValue={setup.default}
           />
         </div>
-        <button className={classes.button} onClick={() => setIsLeft(!isLeft)}>
-          {isLeft ? "Breath Right" : "Breath Left"}
-        </button>
       </div>
     </>
   );

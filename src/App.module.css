@@ -1,6 +1,6 @@
 :root {
   --final-opacity: 0.2;
-  --breath-time: 4s;
+  --breath-time: 2s;
   --transform: translateY(10vh);
 }
 
@@ -19,12 +19,7 @@
   font-weight: 700;
 }
 
-[data-breath="inhale"],
-[data-breath="hold"],
-[data-breath="exhale"],
-[data-breath="hold2"] {
-  /* transform: var(--transform); */
-  /* transition: transform var(--breath-time); */
+.animation {
   animation: fadeOut var(--breath-time) forwards;
 }
 
