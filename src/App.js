@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
-import Form from "./components/Form";
 
 import classes from "./App.module.css";
 
@@ -8,6 +7,7 @@ function App() {
   const holdRef = useRef();
   const exhaleRef = useRef();
   const hold2Ref = useRef();
+  const controlsRef = useRef();
 
   const [isLeft, setIsLeft] = useState(true);
 
@@ -17,6 +17,21 @@ function App() {
     max: 15,
     step: 0.1,
   };
+
+  useEffect(() => {
+    let timer = null;
+    function handleMouseMove(e) {
+      clearTimeout(timer);
+      controlsRef.current.style.opacity = 1;
+      timer = setTimeout(() => {
+        controlsRef.current.style.opacity = 0;
+      }, 3000);
+    }
+
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => document.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   // const timerHandler = (inhale, hold, exhale, hold2) => {
   //   setInhaleTimer(inhale);
@@ -36,11 +51,13 @@ function App() {
 
   return (
     <>
-      <div className={classes.breath} data-breath="inhale" data-side={isLeft ? "left" : "right"}>
-        {/* {breathTypes[breath]} */}
-        BREATH
+      <div className={classes.breathContainer}>
+        <div className={classes.breath} data-breath="inhale" data-side={isLeft ? "left" : "right"}>
+          {/* {breathTypes[breath]} */}
+          BREATH
+        </div>
       </div>
-      <div className={classes.controls}>
+      <div className={classes.controls} ref={controlsRef}>
         <div className={classes.inputContainer}>
           <label>Inhale</label>
           <input

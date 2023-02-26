@@ -4,6 +4,16 @@
   --transform: translateY(10vh);
 }
 
+.breathContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-content: center;
+}
+
 .breath {
   font-size: 3rem;
   font-weight: 700;
@@ -13,8 +23,8 @@
 [data-breath="hold"],
 [data-breath="exhale"],
 [data-breath="hold2"] {
-  transform: var(--transform);
-  transition: transform var(--breath-time);
+  /* transform: var(--transform); */
+  /* transition: transform var(--breath-time); */
   animation: fadeOut var(--breath-time) forwards;
 }
 
@@ -27,18 +37,16 @@
   }
 }
 
-[data-side="left"] {
-  margin-left: 3rem;
-}
-
-[data-side="right"] {
-  text-align: right;
-  margin-right: 3rem;
-}
-
 .controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
   display: grid;
   place-content: center;
+  transition: opacity 0.5s;
 }
 
 .inputContainer {
