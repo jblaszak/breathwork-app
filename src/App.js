@@ -16,18 +16,18 @@ function App() {
   const breathRefs = [inhaleRef, holdRef, exhaleRef, hold2Ref];
   const breathNames = ["INHALE", "HOLD", "EXHALE", "HOLD"];
 
-  useEffect(() => {
-    let timer = null;
-    function handleMouseMove(e) {
-      clearTimeout(timer);
-      controlsRef.current.style.opacity = 1;
-      timer = setTimeout(() => {
-        controlsRef.current.style.opacity = 0;
-      }, 3000);
-    }
-    document.addEventListener("mousemove", handleMouseMove);
-    return () => document.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  // useEffect(() => {
+  //   let timer = null;
+  //   function handleMouseMove(e) {
+  //     clearTimeout(timer);
+  //     controlsRef.current.style.opacity = 1;
+  //     timer = setTimeout(() => {
+  //       controlsRef.current.style.opacity = 0;
+  //     }, 3000);
+  //   }
+  //   document.addEventListener("mousemove", handleMouseMove);
+  //   return () => document.removeEventListener("mousemove", handleMouseMove);
+  // }, []);
 
   const startAnimation = () => {
     let start = Date.now();

@@ -1,17 +1,73 @@
 .inputContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  --border-radius: 1rem;
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 150px;
+  margin-top: 2.5rem;
+  background: linear-gradient(229deg, rgba(76, 141, 162, 1) 0%, rgba(35, 95, 124, 1) 100%);
+  color: white;
+  border-radius: var(--border-radius);
 }
 
 .inputContainer label {
-    font-size: 1.75rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1.75rem;
+  text-align: center;
+  font-size: 1.25rem;
+  letter-spacing: 0.075rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.inputContainer input,
+.inputContainer button {
+  text-align: center;
+  color: inherit;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.inputContainer button {
+  font-size: 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  width: 2.5rem;
+  transition: background 0.25s;
+}
+
+.inputContainer button:hover {
+  background-color: #ffffff44;
+}
+
+.inputContainer button:first-of-type {
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.inputContainer button:last-of-type {
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .inputContainer input {
-    height: 1.75rem;
-    font-size: 1.75rem;
-    width: 70px;
-    padding-left: 10px;
-    text-align: center;
+  font-size: 1.25rem;
+  border-left: none;
+  border-right: none;
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.inputContainer input,
+.inputContainer input[type="number"]::-webkit-inner-spin-button,
+.inputContainer input[type="number"]::-webkit-outer-spin-button,
+.inputContainer button {
+  -webkit-appearance: none;
 }
