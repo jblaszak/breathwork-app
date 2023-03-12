@@ -15,7 +15,7 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: darkgreen;
+  color: white;
 }
 
 main {
@@ -35,12 +35,21 @@ main {
   display: grid;
   place-content: center;
   z-index: 10;
+  text-align: center;
   overflow: hidden;
 }
 
 .breath {
   font-size: 3rem;
   font-weight: 700;
+  margin: 0;
+}
+
+.timer {
+  font-size: 2rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin: 0;
 }
 
 .animation {
@@ -77,6 +86,7 @@ main {
 .cloudContainer img {
   position: absolute;
   z-index: -1;
+  filter: drop-shadow(2px 2px 10px #00000044);
 }
 
 .cloudContainer img:first-of-type {
@@ -100,4 +110,11 @@ main {
   100% {
     transform: translateX(80vw);
   }
+}
+
+.meditating {
+  margin-top: 4rem;
+  width: 65vw;
+  max-width: 500px;
+  filter: drop-shadow(0px 8px 10px #00000066);
 }

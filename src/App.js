@@ -15,7 +15,8 @@ function App() {
   const rafRef = useRef(0);
   const breathRef = useRef(0);
   const stepCountRef = useRef(0);
-  // const timerDisplayRef = useRef("0s");
+  const timerDisplayRef = useRef("");
+  const timerRef = useRef(Date.now() + 1000 * 60 * 10);
 
   const breaths = [
     { name: "INHALE", value: breath1, setValue: setBreath1 },
@@ -37,6 +38,13 @@ function App() {
   //   return () => document.removeEventListener("mousemove", handleMouseMove);
   // }, []);
 
+  function formatTime(time) {
+    // const time = time / 1000;
+    const minutes = (time / 60000) % 59;
+    const seconds = (time / 1000) % 60;
+    return `${minutes} : ${seconds}`;
+  }
+
   const startAnimation = () => {
     let start = Date.now();
     const animatedClass = `${classes.animation}`;
@@ -45,6 +53,7 @@ function App() {
       const interval = Date.now() - start;
       const currentBreath = stepCountRef.current % breaths.length;
       breathRef.current.innerText = breaths[currentBreath].name;
+      timerDisplayRef.current.innerText = formatTime(timerRef.current - Date.now());
       if (!breathRef.current.classList.contains(animatedClass)) {
         breathRef.current.classList.add(animatedClass);
       }
@@ -79,9 +88,9 @@ function App() {
             <img src={cloud} alt="cloud2" />
             <img src={cloud} alt="cloud3" />
           </div>
-          <img src={sitting} alt="meditating girl" width={500} height={500} />
+          <img className={classes.meditating} src={sitting} alt="meditating girl" />
           <p className={classes.breath} ref={breathRef}></p>
-          {/* <p className={classes.timer} ref={timerRef}></p> */}
+          <p className={classes.timer} ref={timerDisplayRef}></p>
         </div>
         <div className={classes.controls} ref={controlsRef}>
           {breaths.map((breath, i) => {
