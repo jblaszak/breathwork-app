@@ -26,30 +26,8 @@ main {
   background: linear-gradient(9deg, rgba(32, 129, 112, 1) 0%, rgba(176, 226, 179, 1) 100%);
 }
 
-.breathContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: grid;
-  place-content: center;
-  z-index: 10;
-  text-align: center;
-  overflow: hidden;
-}
-
-.breath {
-  font-size: 3rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.timer {
-  font-size: 2rem;
-  font-weight: 500;
-  opacity: 0.7;
-  margin: 0;
+button {
+  cursor: pointer;
 }
 
 .animation {
@@ -113,8 +91,80 @@ main {
 }
 
 .meditating {
-  margin-top: 4rem;
+  margin-top: 2rem;
   width: 65vw;
   max-width: 500px;
   filter: drop-shadow(0px 8px 10px #00000066);
+}
+
+.breathContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-content: center;
+  z-index: 10;
+  text-align: center;
+  overflow: hidden;
+}
+
+.instructions {
+  margin-top: -1rem;
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.startButton,
+.restartButton,
+.settingsButton {
+  align-self: center;
+  appearance: none;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  color: white;
+}
+
+.startButton {
+  margin: 0 0 1rem 0;
+  /* margin: 0; */
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.startButton:hover {
+  opacity: 0.7;
+}
+
+.restartButton,
+.settingsButton {
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.restartButton:hover,
+.settingsButton:hover {
+  opacity: 0.5;
+}
+
+.breath {
+  /* display: inline; */
+  /* height: 55px; */
+  font-size: 3rem;
+  font-weight: 700;
+  margin: -0.5rem 0 0 0;
+  padding: 0;
+}
+
+.timer {
+  font-size: 2rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin: 0 0 1rem 0;
 }

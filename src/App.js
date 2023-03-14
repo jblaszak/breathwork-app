@@ -11,12 +11,13 @@ function App() {
   const [breath2, setBreath2] = useState(defaultBreathLength);
   const [breath3, setBreath3] = useState(defaultBreathLength);
   const [breath4, setBreath4] = useState(defaultBreathLength);
+  const [started, setStarted] = useState(false);
   const controlsRef = useRef();
   const rafRef = useRef(0);
-  const breathRef = useRef(0);
+  const breathRef = useRef();
   const stepCountRef = useRef(0);
   const timerDisplayRef = useRef("");
-  const timerRef = useRef(Date.now() + 1000 * 60 * 10);
+  const timerRef = useRef(Date.now() + 60 * 1000 * 10);
 
   const breaths = [
     { name: "INHALE", value: breath1, setValue: setBreath1 },
@@ -38,11 +39,19 @@ function App() {
   //   return () => document.removeEventListener("mousemove", handleMouseMove);
   // }, []);
 
+  function start() {
+    setStarted(true);
+    stepCountRef.current = 0;
+    timerRef.current = Date.now() + 60 * 1000 * 10;
+  }
+
   function formatTime(time) {
-    // const time = time / 1000;
-    const minutes = (time / 60000) % 59;
-    const seconds = (time / 1000) % 60;
-    return `${minutes} : ${seconds}`;
+    const minutes = Math.floor((time / 60000) % 60);
+    const seconds = Math.floor((time / 1000) % 60);
+    return `${minutes.toFixed(0).toString().padStart(2, "0")}:${seconds
+      .toFixed(0)
+      .toString()
+      .padStart(2, "0")}`;
   }
 
   const startAnimation = () => {
@@ -53,10 +62,15 @@ function App() {
       const interval = Date.now() - start;
       const currentBreath = stepCountRef.current % breaths.length;
       breathRef.current.innerText = breaths[currentBreath].name;
-      timerDisplayRef.current.innerText = formatTime(timerRef.current - Date.now());
+
+      const timeLeft = timerRef.current - Date.now();
+      if (timeLeft <= 0) setStarted(false);
+      timerDisplayRef.current.innerText = formatTime(timeLeft);
+
       if (!breathRef.current.classList.contains(animatedClass)) {
         breathRef.current.classList.add(animatedClass);
       }
+
       if (interval > breaths[currentBreath].value * 1000) {
         stepCountRef.current++;
         const nextBreath = stepCountRef.current % breaths.length;
@@ -75,9 +89,11 @@ function App() {
   };
 
   useEffect(() => {
-    startAnimation();
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+    if (started) {
+      startAnimation();
+      return () => cancelAnimationFrame(rafRef.current);
+    }
+  }, [started]);
 
   return (
     <>
@@ -89,8 +105,23 @@ function App() {
             <img src={cloud} alt="cloud3" />
           </div>
           <img className={classes.meditating} src={sitting} alt="meditating girl" />
-          <p className={classes.breath} ref={breathRef}></p>
-          <p className={classes.timer} ref={timerDisplayRef}></p>
+          <div className={classes.instructions}>
+            {started && (
+              <>
+                <span className={classes.breath} ref={breathRef}></span>
+                <p className={classes.timer} ref={timerDisplayRef}></p>
+                <button className={classes.restartButton} onClick={() => start()}>
+                  RESTART
+                </button>
+              </>
+            )}
+            {!started && (
+              <button className={classes.startButton} onClick={() => start()}>
+                START
+              </button>
+            )}
+            <button className={classes.settingsButton}>SETTINGS</button>
+          </div>
         </div>
         <div className={classes.controls} ref={controlsRef}>
           {breaths.map((breath, i) => {
