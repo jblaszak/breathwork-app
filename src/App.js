@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Input from "./components/Input";
-import cloud from "./assets/cloud2.svg";
-import sitting from "./assets/sitting3.svg";
+import cloud from "./assets/cloud.svg";
+import sitting from "./assets/sitting.svg";
 
 import classes from "./App.module.css";
 
 function App() {
-  const defaultBreathLength = 4;
+  const defaultBreathLength = (4).toFixed(1);
   const [breath1, setBreath1] = useState(defaultBreathLength);
   const [breath2, setBreath2] = useState(defaultBreathLength);
   const [breath3, setBreath3] = useState(defaultBreathLength);
