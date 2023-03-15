@@ -30,33 +30,6 @@ button {
   cursor: pointer;
 }
 
-.animation {
-  animation: fadeOut var(--breath-time) forwards;
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.2;
-  }
-}
-
-.controls {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  /* opacity: 1; */
-  display: grid;
-  place-content: center;
-  transition: opacity 0.5s;
-  backdrop-filter: blur(8px);
-}
-
 .cloudContainer {
   position: relative;
 }
@@ -115,12 +88,10 @@ button {
   height: 12rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 }
 
 .startButton,
-.restartButton,
-.settingsButton {
+.subButton {
   align-self: center;
   appearance: none;
   border: none;
@@ -131,7 +102,6 @@ button {
 
 .startButton {
   margin: 0 0 1rem 0;
-  /* margin: 0; */
   font-size: 3rem;
   font-weight: 700;
 }
@@ -140,22 +110,18 @@ button {
   opacity: 0.7;
 }
 
-.restartButton,
-.settingsButton {
+.subButton {
   margin: 0.5rem 0 0 0;
   font-size: 1rem;
   font-weight: 700;
   opacity: 0.7;
 }
 
-.restartButton:hover,
-.settingsButton:hover {
+.subButton:hover {
   opacity: 0.5;
 }
 
 .breath {
-  /* display: inline; */
-  /* height: 55px; */
   font-size: 3rem;
   font-weight: 700;
   margin: -0.5rem 0 0 0;
@@ -167,4 +133,25 @@ button {
   font-weight: 500;
   opacity: 0.7;
   margin: 0 0 1rem 0;
+}
+
+.controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  display: grid;
+  z-index: 100;
+  place-content: center;
+  transition: opacity 0.5s;
+  background: #00000030;
+  backdrop-filter: blur(8px);
+  visibility: hidden;
+}
+
+.close {
+  justify-self: center;
+  margin-top: 2rem;
 }

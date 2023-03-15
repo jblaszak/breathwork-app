@@ -26,19 +26,6 @@ function App() {
     { name: "HOLD", value: breath4, setValue: setBreath4 },
   ];
 
-  // useEffect(() => {
-  //   let timer = null;
-  //   function handleMouseMove(e) {
-  //     clearTimeout(timer);
-  //     controlsRef.current.style.opacity = 1;
-  //     timer = setTimeout(() => {
-  //       controlsRef.current.style.opacity = 0;
-  //     }, 3000);
-  //   }
-  //   document.addEventListener("mousemove", handleMouseMove);
-  //   return () => document.removeEventListener("mousemove", handleMouseMove);
-  // }, []);
-
   function start() {
     setStarted(true);
     stepCountRef.current = 0;
@@ -95,6 +82,18 @@ function App() {
     }
   }, [started]);
 
+  function showControls() {
+    controlsRef.current.style.opacity = 1;
+    controlsRef.current.style.transition = "opacity 0.5s";
+    controlsRef.current.style.visibility = "visible";
+  }
+
+  function hideControls() {
+    controlsRef.current.style.opacity = 0;
+    controlsRef.current.style.transition = "opacity 0.5s, visibility 0.5s";
+    controlsRef.current.style.visibility = "hidden";
+  }
+
   return (
     <>
       <main>
@@ -110,7 +109,7 @@ function App() {
               <>
                 <span className={classes.breath} ref={breathRef}></span>
                 <p className={classes.timer} ref={timerDisplayRef}></p>
-                <button className={classes.restartButton} onClick={() => start()}>
+                <button className={classes.subButton} onClick={() => start()}>
                   RESTART
                 </button>
               </>
@@ -120,22 +119,38 @@ function App() {
                 START
               </button>
             )}
-            <button className={classes.settingsButton}>SETTINGS</button>
+            <button className={classes.subButton} onClick={() => showControls()}>
+              SETTINGS
+            </button>
           </div>
         </div>
-        <div className={classes.controls} ref={controlsRef}>
-          {breaths.map((breath, i) => {
-            return (
-              <Input
-                key={`${breath.name + i}`}
-                label={breath.name}
-                value={breath.value}
-                setValue={breath.setValue}
-                onChange={(e) => breath.setValue(e.target.value)}
-              />
-            );
-          })}
-        </div>
+        {
+          <div
+            className={classes.controls}
+            ref={controlsRef}
+            onClick={(e) => {
+              if (e.target.tagName === "DIV") hideControls();
+            }}
+          >
+            {breaths.map((breath, i) => {
+              return (
+                <Input
+                  key={`${breath.name + i}`}
+                  label={breath.name}
+                  value={breath.value}
+                  setValue={breath.setValue}
+                  onChange={(e) => breath.setValue(e.target.value)}
+                />
+              );
+            })}
+            <button
+              className={`${classes.subButton} ${classes.close}`}
+              onClick={() => hideControls()}
+            >
+              CLOSE
+            </button>
+          </div>
+        }
       </main>
     </>
   );
