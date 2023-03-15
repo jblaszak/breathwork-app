@@ -126,7 +126,7 @@ function App() {
         </div>
         {
           <div
-            className={classes.controls}
+            className={classes.settings}
             ref={controlsRef}
             onClick={(e) => {
               if (e.target.tagName === "DIV") hideControls();
@@ -139,7 +139,6 @@ function App() {
                   label={breath.name}
                   value={breath.value}
                   setValue={breath.setValue}
-                  onChange={(e) => breath.setValue(e.target.value)}
                 />
               );
             })}
