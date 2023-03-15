@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Input from "./components/Input";
+import TimerControls from "./components/TimerControls";
 import cloud from "./assets/cloud.svg";
 import sitting from "./assets/sitting.svg";
 
@@ -17,7 +18,9 @@ function App() {
   const breathRef = useRef();
   const stepCountRef = useRef(0);
   const timerDisplayRef = useRef("");
-  const timerRef = useRef(Date.now() + 60 * 1000 * 10);
+  const defaultTime = 60 * 1000 * 10;
+  const timerRef = useRef(defaultTime);
+  const [endTime, setEndTime] = useState(Date.now() + defaultTime);
 
   const breaths = [
     { name: "INHALE", value: breath1, setValue: setBreath1 },
@@ -29,7 +32,7 @@ function App() {
   function start() {
     setStarted(true);
     stepCountRef.current = 0;
-    timerRef.current = Date.now() + 60 * 1000 * 10;
+    setEndTime(Date.now() + timerRef.current);
   }
 
   function formatTime(time) {
@@ -50,7 +53,7 @@ function App() {
       const currentBreath = stepCountRef.current % breaths.length;
       breathRef.current.innerText = breaths[currentBreath].name;
 
-      const timeLeft = timerRef.current - Date.now();
+      const timeLeft = endTime - Date.now();
       if (timeLeft <= 0) setStarted(false);
       timerDisplayRef.current.innerText = formatTime(timeLeft);
 
@@ -138,10 +141,12 @@ function App() {
                   key={`${breath.name + i}`}
                   label={breath.name}
                   value={breath.value}
+                  step={0.2}
                   setValue={breath.setValue}
                 />
               );
             })}
+            <TimerControls />
             <button
               className={`${classes.subButton} ${classes.close}`}
               onClick={() => hideControls()}

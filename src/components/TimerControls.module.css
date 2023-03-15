@@ -1,0 +1,20 @@
+.timerContainer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.timerContainer label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2rem;
+  text-align: center;
+  font-size: 1.25rem;
+  letter-spacing: 0.075rem;
+  font-weight: 700;
+  pointer-events: none;
+}

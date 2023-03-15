@@ -11,6 +11,12 @@
   border-radius: var(--border-radius);
 }
 
+.verticalInputContainer {
+  width: 2rem;
+  flex-direction: column-reverse;
+  margin-top: 0;
+}
+
 .inputContainer label {
   position: absolute;
   left: 0;
@@ -31,6 +37,10 @@
   border: none;
   margin: 0;
   padding: 0;
+}
+.inputContainer input:focus-visible {
+  outline-offset: 0px;
+  width: 2rem;
 }
 
 .inputContainer button {
@@ -58,12 +68,36 @@
   border-bottom-right-radius: var(--border-radius);
 }
 
+.verticalInputContainer button {
+  width: 2rem;
+}
+
+/* For '-', because of appearance in file */
+.verticalInputContainer button:first-of-type {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+/* For '+', because of appearance in file */
+.verticalInputContainer button:last-of-type {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .inputContainer input {
   font-size: 1.25rem;
   border-left: none;
   border-right: none;
   min-width: 0;
   flex-grow: 1;
+}
+
+.verticalInputContainer input {
+  padding-top: 0.25rem;
 }
 
 .inputContainer input,

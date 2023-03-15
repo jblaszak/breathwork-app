@@ -30,6 +30,19 @@ button {
   cursor: pointer;
 }
 
+.animation {
+  animation: fadeOut var(--breath-time);
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
 .cloudContainer {
   position: relative;
 }
