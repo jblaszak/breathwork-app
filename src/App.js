@@ -20,7 +20,7 @@ function App() {
   const timerDisplayRef = useRef("");
   const defaultTime = 60 * 1000 * 10;
   const timerRef = useRef(defaultTime);
-  const [endTime, setEndTime] = useState(Date.now() + defaultTime);
+  const endTime = useRef(Date.now() + defaultTime);
 
   const breaths = [
     { name: "INHALE", value: breath1, setValue: setBreath1 },
@@ -32,7 +32,7 @@ function App() {
   function start() {
     setStarted(true);
     stepCountRef.current = 0;
-    setEndTime(Date.now() + timerRef.current);
+    endTime.current = Date.now() + timerRef.current;
   }
 
   function formatTime(time) {
@@ -53,8 +53,12 @@ function App() {
       const currentBreath = stepCountRef.current % breaths.length;
       breathRef.current.innerText = breaths[currentBreath].name;
 
-      const timeLeft = endTime - Date.now();
-      if (timeLeft <= 0) setStarted(false);
+      const timeLeft = endTime.current - Date.now();
+      if (timeLeft <= 0) {
+        setStarted(false);
+        cancelAnimationFrame(rafRef.current);
+        return;
+      }
       timerDisplayRef.current.innerText = formatTime(timeLeft);
 
       if (!breathRef.current.classList.contains(animatedClass)) {
@@ -146,7 +150,7 @@ function App() {
                 />
               );
             })}
-            <TimerControls />
+            <TimerControls ref={timerRef} />
             <button
               className={`${classes.subButton} ${classes.close}`}
               onClick={() => hideControls()}
