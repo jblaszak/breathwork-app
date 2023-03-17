@@ -38,6 +38,10 @@ function App() {
   const [audioInhaleBreath] = useState(new Audio(inhaleBreath));
   const [audioExhaleBreath] = useState(new Audio(exhaleBreath));
 
+  const [playBackground, setPlayBackground] = useState(false);
+  const [playBreath, setPlayBreath] = useState("none");
+  const playBreathRef = useRef(playBreath);
+
   const breaths = [
     {
       name: "INHALE",
@@ -73,11 +77,14 @@ function App() {
     setStarted(true);
     stepCountRef.current = 0;
     endTime.current = Date.now() + timerRef.current;
-    audioWaves.currentTime = 0;
-    audioWaves.volume = 0;
-    audioWaves.loop = true;
-    audioWaves.play();
-    fadeInAudio(audioWaves);
+
+    if (playBackground) {
+      audioWaves.currentTime = 0;
+      audioWaves.volume = 0;
+      audioWaves.loop = true;
+      audioWaves.play();
+      fadeInAudio(audioWaves);
+    }
   }
 
   function formatTime(time) {
@@ -114,6 +121,22 @@ function App() {
     }, 100);
   }
 
+  useEffect(() => {
+    if (playBackground) {
+      audioWaves.currentTime = 0;
+      audioWaves.volume = 0;
+      audioWaves.loop = true;
+      audioWaves.play();
+      fadeInAudio(audioWaves);
+    } else {
+      fadeOutAudio(audioWaves);
+    }
+  }, [playBackground, audioWaves]);
+
+  useEffect(() => {
+    playBreathRef.current = playBreath;
+  }, [playBreath]);
+
   const startAnimation = () => {
     let start = Date.now();
     const animatedClass = `${classes.animation}`;
@@ -136,7 +159,11 @@ function App() {
 
       if (!breathRef.current.classList.contains(animatedClass)) {
         breathRef.current.classList.add(animatedClass);
-        breaths[currentBreath].audioWord.play();
+        if (playBreathRef.current === "voice") {
+          breaths[currentBreath].audioWord.play();
+        } else if (playBreathRef.current === "breath") {
+          breaths[currentBreath].audioBreath?.play();
+        }
       }
 
       if (interval > breaths[currentBreath].value * 1000) {
@@ -224,6 +251,52 @@ function App() {
             );
           })}
           <TimerControls ref={timerRef} />
+          <fieldset className={classes.breathOptions}>
+            <legend>Breath Audio</legend>
+            <div>
+              <input
+                type="radio"
+                id="voice"
+                name="breathAudio"
+                value="voice"
+                checked={playBreath === "voice"}
+                onChange={(e) => setPlayBreath(e.target.value)}
+              />
+              <label htmlFor="voice">Voice</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="breath"
+                name="breathAudio"
+                value="breath"
+                checked={playBreath === "breath"}
+                onChange={(e) => setPlayBreath(e.target.value)}
+              />
+              <label htmlFor="breath">Breath</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                id="none"
+                name="breathAudio"
+                value="none"
+                checked={playBreath === "none"}
+                onChange={(e) => setPlayBreath(e.target.value)}
+              />
+              <label htmlFor="none">None</label>
+            </div>
+          </fieldset>
+          <div>
+            <input
+              type="checkbox"
+              name="backgroundAudio"
+              id="backgroundAudio"
+              value={playBackground}
+              onChange={(e) => setPlayBackground(e.target.checked)}
+            />
+            <label htmlFor="backgroundAudio">Background Audio</label>
+          </div>
           <button
             className={`${classes.subButton} ${classes.close}`}
             onClick={() => hideControls()}
