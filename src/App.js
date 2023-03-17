@@ -3,6 +3,13 @@ import Input from "./components/Input";
 import TimerControls from "./components/TimerControls";
 import cloud from "./assets/cloud.svg";
 import sitting from "./assets/sitting.svg";
+import completed from "./assets/completed2.mp3";
+import inhale from "./assets/inhale.mp3";
+import exhale from "./assets/exhale.mp3";
+import hold from "./assets/hold.mp3";
+import inhaleBreath from "./assets/inhale2.mp3";
+import exhaleBreath from "./assets/exhale2.mp3";
+import waves from "./assets/waves.mp3";
 
 import classes from "./App.module.css";
 
@@ -13,6 +20,7 @@ function App() {
   const [breath3, setBreath3] = useState(defaultBreathLength);
   const [breath4, setBreath4] = useState(defaultBreathLength);
   const [started, setStarted] = useState(false);
+
   const controlsRef = useRef();
   const rafRef = useRef(0);
   const breathRef = useRef();
@@ -22,17 +30,54 @@ function App() {
   const timerRef = useRef(defaultTime);
   const endTime = useRef(Date.now() + defaultTime);
 
+  const [audioWaves] = useState(new Audio(waves));
+  const [audioCompleted] = useState(new Audio(completed));
+  const [audioInhale] = useState(new Audio(inhale));
+  const [audioHold] = useState(new Audio(hold));
+  const [audioExhale] = useState(new Audio(exhale));
+  const [audioInhaleBreath] = useState(new Audio(inhaleBreath));
+  const [audioExhaleBreath] = useState(new Audio(exhaleBreath));
+
   const breaths = [
-    { name: "INHALE", value: breath1, setValue: setBreath1 },
-    { name: "HOLD", value: breath2, setValue: setBreath2 },
-    { name: "EXHALE", value: breath3, setValue: setBreath3 },
-    { name: "HOLD", value: breath4, setValue: setBreath4 },
+    {
+      name: "INHALE",
+      value: breath1,
+      setValue: setBreath1,
+      audioWord: audioInhale,
+      audioBreath: audioInhaleBreath,
+    },
+    {
+      name: "HOLD",
+      value: breath2,
+      setValue: setBreath2,
+      audioWord: audioHold,
+      audioBreath: null,
+    },
+    {
+      name: "EXHALE",
+      value: breath3,
+      setValue: setBreath3,
+      audioWord: audioExhale,
+      audioBreath: audioExhaleBreath,
+    },
+    {
+      name: "HOLD",
+      value: breath4,
+      setValue: setBreath4,
+      audioWord: audioHold,
+      audioBreath: null,
+    },
   ];
 
   function start() {
     setStarted(true);
     stepCountRef.current = 0;
     endTime.current = Date.now() + timerRef.current;
+    audioWaves.currentTime = 0;
+    audioWaves.volume = 0;
+    audioWaves.loop = true;
+    audioWaves.play();
+    fadeInAudio(audioWaves);
   }
 
   function formatTime(time) {
@@ -44,9 +89,35 @@ function App() {
       .padStart(2, "0")}`;
   }
 
+  function fadeOutAudio(audio) {
+    let volume = 1;
+    const intervalId = setInterval(() => {
+      volume = volume * 0.8;
+      audio.volume = volume;
+      if (volume < 0.02) {
+        audio.volume = 0;
+        audio.currentTime = 0;
+        audio.pause();
+        clearInterval(intervalId);
+      }
+    }, 100);
+  }
+
+  function fadeInAudio(audio) {
+    let volume = 0.01;
+    const intervalId = setInterval(() => {
+      volume = volume * 1.2;
+      audio.volume = volume > 1 ? 1 : volume;
+      if (volume >= 1) {
+        clearInterval(intervalId);
+      }
+    }, 100);
+  }
+
   const startAnimation = () => {
     let start = Date.now();
     const animatedClass = `${classes.animation}`;
+    document.documentElement.style.setProperty("--breath-time", `${breaths[0].value}s`);
 
     function playAnimation() {
       const interval = Date.now() - start;
@@ -56,6 +127,8 @@ function App() {
       const timeLeft = endTime.current - Date.now();
       if (timeLeft <= 0) {
         setStarted(false);
+        fadeOutAudio(audioWaves);
+        audioCompleted.play();
         cancelAnimationFrame(rafRef.current);
         return;
       }
@@ -63,6 +136,7 @@ function App() {
 
       if (!breathRef.current.classList.contains(animatedClass)) {
         breathRef.current.classList.add(animatedClass);
+        breaths[currentBreath].audioWord.play();
       }
 
       if (interval > breaths[currentBreath].value * 1000) {
@@ -131,34 +205,32 @@ function App() {
             </button>
           </div>
         </div>
-        {
-          <div
-            className={classes.settings}
-            ref={controlsRef}
-            onClick={(e) => {
-              if (e.target.tagName === "DIV") hideControls();
-            }}
+        <div
+          className={classes.settings}
+          ref={controlsRef}
+          onClick={(e) => {
+            if (e.target.tagName === "DIV") hideControls();
+          }}
+        >
+          {breaths.map((breath, i) => {
+            return (
+              <Input
+                key={`${breath.name + i}`}
+                label={breath.name}
+                value={breath.value}
+                step={0.1}
+                setValue={breath.setValue}
+              />
+            );
+          })}
+          <TimerControls ref={timerRef} />
+          <button
+            className={`${classes.subButton} ${classes.close}`}
+            onClick={() => hideControls()}
           >
-            {breaths.map((breath, i) => {
-              return (
-                <Input
-                  key={`${breath.name + i}`}
-                  label={breath.name}
-                  value={breath.value}
-                  step={0.2}
-                  setValue={breath.setValue}
-                />
-              );
-            })}
-            <TimerControls ref={timerRef} />
-            <button
-              className={`${classes.subButton} ${classes.close}`}
-              onClick={() => hideControls()}
-            >
-              CLOSE
-            </button>
-          </div>
-        }
+            CLOSE
+          </button>
+        </div>
       </main>
     </>
   );
