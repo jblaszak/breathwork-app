@@ -2,9 +2,10 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 0 1rem;
   align-items: center;
-  margin-top: 3rem;
+  margin-top: 2.5rem;
 }
 
 .timerContainer label {

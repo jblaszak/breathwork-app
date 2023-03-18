@@ -2,9 +2,10 @@
   --border-radius: 1rem;
   display: flex;
   position: relative;
+  justify-self: center;
   align-items: center;
   width: 150px;
-  margin-top: 2.75rem;
+  margin-top: 2.5rem;
   background: linear-gradient(229deg, rgba(76, 141, 162, 1) 0%, rgba(35, 95, 124, 1) 100%);
   box-shadow: 2px 3px 10px 2px rgba(16, 64, 55, 0.8);
   color: white;

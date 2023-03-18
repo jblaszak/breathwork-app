@@ -1,7 +1,9 @@
 :root {
-  --final-opacity: 0.2;
-  --breath-time: 2s;
-  --transform: translateY(10vh);
+  --breath-time: 4s;
+  --breath-final-opacity: 0.2;
+  --button-opacity: 0.5;
+  --button-transition: opacity 0.5s;
+  --button-hover-opacity: 1;
 }
 
 html,
@@ -39,7 +41,7 @@ button {
     opacity: 1;
   }
   100% {
-    opacity: 0.2;
+    opacity: var(--breath-final-opacity);
   }
 }
 
@@ -117,21 +119,24 @@ button {
   margin: 0 0 1rem 0;
   font-size: 3rem;
   font-weight: 700;
+  opacity: var(--button-opacity);
+  transition: var(--button-transition);
 }
 
 .startButton:hover {
-  opacity: 0.7;
+  opacity: var(--button-hover-opacity);
 }
 
 .subButton {
   margin: 0.5rem 0 0 0;
   font-size: 1rem;
   font-weight: 700;
-  opacity: 0.7;
+  opacity: var(--button-opacity);
+  transition: var(--button-transition);
 }
 
 .subButton:hover {
-  opacity: 0.5;
+  opacity: var(--button-hover-opacity);
 }
 
 .breath {
@@ -166,5 +171,73 @@ button {
 
 .close {
   justify-self: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
+}
+
+.audioOptions {
+  border: none;
+  padding: 0;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 12rem;
+}
+
+.audioOptions legend {
+  text-align: center;
+  font-size: 1.25rem;
+  letter-spacing: 0.075rem;
+  font-weight: 700;
+  pointer-events: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.audioOptions,
+.audioOptions label {
+  cursor: pointer;
+}
+
+.audioOptions input {
+  display: none;
+  position: relative;
+}
+
+.audioOptions label {
+  position: relative;
+  letter-spacing: 0.075rem;
+  font-weight: 700;
+  opacity: var(--button-opacity);
+  transition: var(--button-transition);
+}
+
+.audioOptions label:hover {
+  opacity: var(--button-hover-opacity);
+}
+
+.audioOptions input:checked + label {
+  opacity: var(--button-hover-opacity);
+}
+
+.audioOptions input + label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 0%;
+  opacity: 0;
+  bottom: -1px;
+  border: 1px solid white;
+  transition: max-width 0.5s, opacity 0.5s;
+}
+
+.audioOptions input:checked + label::after {
+  max-width: 100%;
+  opacity: 1;
+}
+
+.backgroundAudio {
+  margin: 0.5rem auto;
 }

@@ -66,6 +66,7 @@ function App() {
   const startAnimation = () => {
     let start = Date.now();
     const animatedClass = `${classes.animation}`;
+    const oneFrameDuration = 1 / 60;
     document.documentElement.style.setProperty("--breath-time", `${breaths[0].value}s`);
 
     function playAnimation() {
@@ -92,7 +93,7 @@ function App() {
         }
       }
 
-      if (interval > breaths[currentBreath].value * 1000) {
+      if (interval > (breaths[currentBreath].value - 0.0166) * 1000) {
         stepCountRef.current++;
         const nextBreath = stepCountRef.current % breaths.length;
         document.documentElement.style.setProperty(
@@ -101,6 +102,7 @@ function App() {
         );
         breathRef.current.innerText = breaths[nextBreath].name;
         breathRef.current.classList.remove(animatedClass);
+        console.log((Date.now() - start) / 1000);
         start = Date.now();
       }
 
@@ -177,9 +179,9 @@ function App() {
             );
           })}
           <TimerControls ref={timerRef} />
-          <fieldset className={classes.breathOptions}>
-            <legend>Breath Audio</legend>
-            <div>
+          <fieldset className={classes.audioOptions}>
+            <legend>AUDIO</legend>
+            <div className={classes.breathAudio}>
               <input
                 type="radio"
                 id="voice"
@@ -188,9 +190,9 @@ function App() {
                 checked={playBreath === "voice"}
                 onChange={(e) => setPlayBreath(e.target.value)}
               />
-              <label htmlFor="voice">Voice</label>
+              <label htmlFor="voice">VOICE</label>
             </div>
-            <div>
+            <div className={classes.breathAudio}>
               <input
                 type="radio"
                 id="breath"
@@ -199,9 +201,9 @@ function App() {
                 checked={playBreath === "breath"}
                 onChange={(e) => setPlayBreath(e.target.value)}
               />
-              <label htmlFor="breath">Breath</label>
+              <label htmlFor="breath">BREATH</label>
             </div>
-            <div>
+            <div className={classes.breathAudio}>
               <input
                 type="radio"
                 id="none"
@@ -210,19 +212,19 @@ function App() {
                 checked={playBreath === "none"}
                 onChange={(e) => setPlayBreath(e.target.value)}
               />
-              <label htmlFor="none">None</label>
+              <label htmlFor="none">NONE</label>
+            </div>
+            <div className={classes.backgroundAudio}>
+              <input
+                type="checkbox"
+                name="backgroundAudio"
+                id="backgroundAudio"
+                value={playBackground}
+                onChange={(e) => setPlayBackground(e.target.checked)}
+              />
+              <label htmlFor="backgroundAudio">BACKGROUND AUDIO</label>
             </div>
           </fieldset>
-          <div>
-            <input
-              type="checkbox"
-              name="backgroundAudio"
-              id="backgroundAudio"
-              value={playBackground}
-              onChange={(e) => setPlayBackground(e.target.checked)}
-            />
-            <label htmlFor="backgroundAudio">Background Audio</label>
-          </div>
           <button
             className={`${classes.subButton} ${classes.close}`}
             onClick={() => hideControls()}
