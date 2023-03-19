@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Input from "./components/Input";
 import TimerControls from "./components/TimerControls";
 import useBreaths from "./hooks/useBreaths";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 import { fadeInAudio, fadeOutAudio } from "./helpers/audio";
 import { formatTime } from "./helpers/time";
@@ -21,16 +22,16 @@ function App() {
   const breathRef = useRef();
   const stepCountRef = useRef(0);
   const timerDisplayRef = useRef("");
-  const defaultTime = 60 * 1000 * 10;
-  const timerRef = useRef(defaultTime);
-  const endTime = useRef(Date.now() + defaultTime);
+  const [timer, setTimer] = useLocalStorage("timer", 60 * 1000 * 10);
+  const timerRef = useRef(timer);
+  const endTime = useRef(Date.now() + timer);
 
   const [audioWaves] = useState(new Audio(waves));
   const [audioCompleted] = useState(new Audio(completed));
 
   const [started, setStarted] = useState(false);
-  const [playBackground, setPlayBackground] = useState(false);
-  const [playBreath, setPlayBreath] = useState("none");
+  const [playBackground, setPlayBackground] = useLocalStorage("playBackground", false);
+  const [playBreath, setPlayBreath] = useLocalStorage("playBreath", "none");
   const playBreathRef = useRef(playBreath);
 
   function start() {
@@ -66,7 +67,6 @@ function App() {
   const startAnimation = () => {
     let start = Date.now();
     const animatedClass = `${classes.animation}`;
-    const oneFrameDuration = 1 / 60;
     document.documentElement.style.setProperty("--breath-time", `${breaths[0].value}s`);
 
     function playAnimation() {
@@ -178,7 +178,7 @@ function App() {
               />
             );
           })}
-          <TimerControls ref={timerRef} />
+          <TimerControls ref={timerRef} setTimer={setTimer} />
           <fieldset className={classes.audioOptions}>
             <legend>AUDIO</legend>
             <div className={classes.breathAudio}>
@@ -220,6 +220,7 @@ function App() {
                 name="backgroundAudio"
                 id="backgroundAudio"
                 value={playBackground}
+                checked={playBackground}
                 onChange={(e) => setPlayBackground(e.target.checked)}
               />
               <label htmlFor="backgroundAudio">BACKGROUND AUDIO</label>

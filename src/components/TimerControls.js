@@ -2,13 +2,8 @@ import { useState, forwardRef } from "react";
 import Input from "./Input";
 import classes from "./TimerControls.module.css";
 
-const TimerControls = forwardRef((props, ref) => {
-  const [digit4, setDigit4] = useState(1);
-  const [digit3, setDigit3] = useState(0);
-  const [digit2, setDigit2] = useState(0);
-  const [digit1, setDigit1] = useState(0);
-
-  function setTimer(value, digit) {
+const TimerControls = forwardRef(({ setTimer }, ref) => {
+  function getTimeDigits() {
     let minutes = Math.floor((ref.current / 60000) % 60)
       .toFixed(0)
       .toString()
@@ -17,31 +12,43 @@ const TimerControls = forwardRef((props, ref) => {
       .toFixed(0)
       .toString()
       .padStart(2, "0");
-    let time = `${minutes}${seconds}`.split("");
+    return `${minutes}${seconds}`.split("").map((entry) => Number(entry));
+  }
+
+  const digits = getTimeDigits();
+
+  const [tensMinutes, setTensMinutes] = useState(digits[0]);
+  const [minutes, setMinutes] = useState(digits[1]);
+  const [tensSeconds, setTensSeconds] = useState(digits[2]);
+  const [seconds, setSeconds] = useState(digits[3]);
+
+  function updateTimer(value, digit) {
+    value = Number(value);
+    const time = getTimeDigits();
 
     switch (digit) {
       case 4:
-        setDigit4(value);
+        setTensMinutes(value);
         time[0] = value;
         break;
       case 3:
-        setDigit3(value);
+        setMinutes(value);
         time[1] = value;
         break;
       case 2:
-        setDigit2(value);
+        setTensSeconds(value);
         time[2] = value;
         break;
       case 1:
-        setDigit1(value);
+        setSeconds(value);
         time[3] = value;
         break;
       default:
         return;
     }
-    ref.current =
-      ((Number(time[0]) * 10 + Number(time[1])) * 60 + Number(time[2]) * 10 + Number(time[3])) *
-      1000;
+    const newTimerValue = ((time[0] * 10 + time[1]) * 60 + time[2] * 10 + time[3]) * 1000;
+    ref.current = newTimerValue;
+    setTimer(newTimerValue);
   }
 
   return (
@@ -49,37 +56,37 @@ const TimerControls = forwardRef((props, ref) => {
       <div className={classes.timerContainer}>
         <label>TIMER</label>
         <Input
-          value={digit4}
+          value={tensMinutes}
           variant={"vertical"}
           min={0}
           max={5}
           step={1}
-          setValue={(val) => setTimer(val, 4)}
+          setValue={(val) => updateTimer(val, 4)}
         />
         <Input
-          value={digit3}
+          value={minutes}
           variant={"vertical"}
           min={0}
           max={9}
           step={1}
-          setValue={(val) => setTimer(val, 3)}
+          setValue={(val) => updateTimer(val, 3)}
         />
         <span>:</span>
         <Input
-          value={digit2}
+          value={tensSeconds}
           variant={"vertical"}
           min={0}
           max={5}
           step={1}
-          setValue={(val) => setTimer(val, 2)}
+          setValue={(val) => updateTimer(val, 2)}
         />
         <Input
-          value={digit1}
+          value={seconds}
           variant={"vertical"}
           min={0}
           max={9}
           step={1}
-          setValue={(val) => setTimer(val, 1)}
+          setValue={(val) => updateTimer(val, 1)}
         />
       </div>
     </>
