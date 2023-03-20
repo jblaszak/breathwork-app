@@ -102,7 +102,6 @@ function App() {
         );
         breathRef.current.innerText = breaths[nextBreath].name;
         breathRef.current.classList.remove(animatedClass);
-        console.log((Date.now() - start) / 1000);
         start = Date.now();
       }
 
@@ -116,7 +115,7 @@ function App() {
       startAnimation();
       return () => cancelAnimationFrame(rafRef.current);
     }
-  }, [started]);
+  }, [started]); // eslint-disable-line
 
   function showControls() {
     controlsRef.current.style.opacity = 1;
