@@ -2,6 +2,8 @@
 
 I created this project because I wanted an app that I could use to do breathing exercises but there wasn't anything out there that fit my needs.
 
+Live demo - [https://sunny-parfait-5c7ada.netlify.app/](https://sunny-parfait-5c7ada.netlify.app/)
+
 ## Pain Points
 
 - No fine-grained control over the duration of each breath and forced into a limited set of specific breathing patterns
