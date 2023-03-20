@@ -134,17 +134,28 @@ function App() {
     <>
       <main>
         <div className={classes.breathContainer}>
-          <div className={classes.cloudContainer}>
-            <img src={cloud} alt="cloud" />
-            <img src={cloud} alt="cloud2" />
-            <img src={cloud} alt="cloud3" />
+          <div className={classes.cloudContainer} focusable={false} aria-hidden={true}>
+            <img src={cloud} alt="" aria-hidden={true} />
+            <img src={cloud} alt="" aria-hidden={true} />
+            <img src={cloud} alt="" aria-hidden={true} />
           </div>
-          <img className={classes.meditating} src={sitting} alt="meditating girl" />
+          <img
+            className={classes.meditating}
+            src={sitting}
+            alt=""
+            focusable={false}
+            aria-hidden={true}
+          />
           <div className={classes.instructions}>
             {started && (
               <>
-                <span className={classes.breath} ref={breathRef}></span>
-                <p className={classes.timer} ref={timerDisplayRef}></p>
+                <span className={classes.breath} ref={breathRef} aria-live="off"></span>
+                <p
+                  className={classes.timer}
+                  ref={timerDisplayRef}
+                  role="timer"
+                  aria-live="polite"
+                ></p>
                 <button className={classes.subButton} onClick={() => start()}>
                   RESTART
                 </button>
@@ -155,7 +166,11 @@ function App() {
                 START
               </button>
             )}
-            <button className={classes.subButton} onClick={() => showControls()}>
+            <button
+              className={classes.subButton}
+              aria-label="Open Settings"
+              onClick={() => showControls()}
+            >
               SETTINGS
             </button>
           </div>
@@ -163,6 +178,7 @@ function App() {
         <div
           className={classes.settings}
           ref={controlsRef}
+          focusable={false}
           onClick={(e) => {
             if (e.target.tagName === "DIV") hideControls();
           }}
@@ -172,6 +188,7 @@ function App() {
               <Input
                 key={`${breath.name + i}`}
                 label={breath.name}
+                ariaText={`${breath.name} duration`}
                 value={breath.value}
                 step={0.1}
                 setValue={breath.setValue}
@@ -185,6 +202,7 @@ function App() {
               <input
                 type="radio"
                 id="voice"
+                aria-label="Play voice guide sounds"
                 name="breathAudio"
                 value="voice"
                 checked={playBreath === "voice"}
@@ -196,6 +214,7 @@ function App() {
               <input
                 type="radio"
                 id="breath"
+                aria-label="Play breathing sounds"
                 name="breathAudio"
                 value="breath"
                 checked={playBreath === "breath"}
@@ -207,6 +226,7 @@ function App() {
               <input
                 type="radio"
                 id="none"
+                aria-label="Do not play breath audio"
                 name="breathAudio"
                 value="none"
                 checked={playBreath === "none"}
@@ -217,6 +237,7 @@ function App() {
             <div className={classes.backgroundAudio}>
               <input
                 type="checkbox"
+                aria-label="Enable background audio"
                 name="backgroundAudio"
                 id="backgroundAudio"
                 value={playBackground}
@@ -229,6 +250,7 @@ function App() {
           <button
             className={`${classes.subButton} ${classes.close}`}
             onClick={() => hideControls()}
+            aria-label="close settings"
           >
             CLOSE
           </button>

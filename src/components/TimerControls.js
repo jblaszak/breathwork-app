@@ -58,6 +58,7 @@ const TimerControls = forwardRef(({ setTimer }, ref) => {
         <Input
           value={tensMinutes}
           variant={"vertical"}
+          ariaText="tens minutes"
           min={0}
           max={5}
           step={1}
@@ -66,6 +67,7 @@ const TimerControls = forwardRef(({ setTimer }, ref) => {
         <Input
           value={minutes}
           variant={"vertical"}
+          ariaText="minutes"
           min={0}
           max={9}
           step={1}
@@ -75,6 +77,7 @@ const TimerControls = forwardRef(({ setTimer }, ref) => {
         <Input
           value={tensSeconds}
           variant={"vertical"}
+          ariaText="tens seconds"
           min={0}
           max={5}
           step={1}
@@ -83,6 +86,7 @@ const TimerControls = forwardRef(({ setTimer }, ref) => {
         <Input
           value={seconds}
           variant={"vertical"}
+          ariaText="seconds"
           min={0}
           max={9}
           step={1}

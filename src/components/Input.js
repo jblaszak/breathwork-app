@@ -2,6 +2,7 @@ import classes from "./Input.module.css";
 
 const Input = ({
   setValue,
+  ariaText = "",
   label = "",
   value = 2,
   min = 0,
@@ -40,11 +41,13 @@ const Input = ({
       <button
         onClick={(e) => decrement()}
         className={variant === "side" ? "" : classes.bottomButton}
+        aria-label={`Decrease ${ariaText}`}
       >
         -
       </button>
       <input
         className={variant === "side" ? "" : classes.verticalInput}
+        aria-label={`Edit ${ariaText}`}
         type="number"
         min={min}
         max={max}
@@ -52,7 +55,11 @@ const Input = ({
         value={value}
         onChange={(e) => onChange(e)}
       />
-      <button onClick={(e) => increment()} className={variant === "side" ? "" : classes.topButton}>
+      <button
+        onClick={(e) => increment()}
+        aria-label={`Increase ${ariaText}`}
+        className={variant === "side" ? "" : classes.topButton}
+      >
         +
       </button>
     </div>
