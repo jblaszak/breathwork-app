@@ -10,7 +10,7 @@ import { formatTime } from "./helpers/time";
 import cloud from "./assets/cloud.svg";
 import sitting from "./assets/sitting.svg";
 import completed from "./assets/completed2.mp3";
-import waves from "./assets/waves.mp3";
+import waves from "./assets/waves.MP3";
 
 import classes from "./App.module.css";
 

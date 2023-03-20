@@ -3,8 +3,8 @@ import useLocalStorage from "./useLocalStorage";
 import inhale from "../assets/inhale.mp3";
 import exhale from "../assets/exhale.mp3";
 import hold from "../assets/hold.mp3";
-import inhaleBreath from "../assets/inhale2.mp3";
-import exhaleBreath from "../assets/exhale2.mp3";
+import inhaleBreath from "../assets/inhale2.MP3";
+import exhaleBreath from "../assets/exhale2.MP3";
 
 export default function useBreaths() {
   const [breath1, setBreath1] = useLocalStorage("inhale", 4.0);
